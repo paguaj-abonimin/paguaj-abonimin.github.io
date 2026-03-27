@@ -1,624 +1,183 @@
 <!doctype html>
-<html lang="sq">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Paguaj Abonimin Online</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
-
+  
   <style>
-    :root {
-      --bg: #f0ede8;
-      --card-bg: #ffffff;
-      --accent: #1a1a2e;
-      --accent-light: #2d2d4e;
-      --gold: #c9a84c;
-      --gold-light: #e8d5a3;
-      --text-primary: #1a1a2e;
-      --text-muted: #7a7a8c;
-      --border: #e2ddd6;
-      --success: #2d8a5e;
-      --radius: 16px;
-      --shadow: 0 8px 40px rgba(26, 26, 46, 0.10);
-      --shadow-sm: 0 2px 12px rgba(26, 26, 46, 0.07);
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      font-size: 16px;
-    }
-
+    /* Base body styling to center the content */
     body {
-      background-color: var(--bg);
-      background-image:
-        radial-gradient(ellipse at 20% 20%, rgba(201, 168, 76, 0.10) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(26, 26, 46, 0.06) 0%, transparent 50%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'DM Sans', sans-serif;
-      padding: 24px 16px;
+        background: #f7f7f7;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
     }
 
-    .page-wrapper {
-      width: 100%;
-      max-width: 480px;
+    /* Modern card container */
+    #smart-button-container {
+        background: #ffffff;
+        padding: 30px 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 400px; /* Limits width on desktop, full width on mobile */
+        box-sizing: border-box;
     }
 
-    /* ── Header ── */
-    .header {
-      text-align: center;
-      margin-bottom: 28px;
-      animation: fadeDown 0.6s ease both;
+    /* Heading styling */
+    .welcome-message {
+        font-size: 22px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-top: 0;
+        margin-bottom: 20px;
     }
 
-    .header-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--accent);
-      color: var(--gold-light);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 6px 14px;
-      border-radius: 100px;
-      margin-bottom: 16px;
+    /* Responsive, touch-friendly dropdowns */
+    select {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 15px;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        font-size: 16px; /* 16px prevents iOS automatic zoom on focus */
+        color: #333;
+        background-color: #fff;
+        box-sizing: border-box;
+        cursor: pointer;
     }
 
-    .header-badge::before {
-      content: '';
-      display: block;
-      width: 6px;
-      height: 6px;
-      background: var(--gold);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
+    select:focus {
+        outline: none;
+        border-color: #0070ba;
+        box-shadow: 0 0 0 2px rgba(0, 112, 186, 0.2);
     }
 
-    .header h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(26px, 6vw, 34px);
-      color: var(--text-primary);
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-    }
-
-    .header p {
-      color: var(--text-muted);
-      font-size: 14px;
-      margin-top: 8px;
-      font-weight: 400;
-    }
-
-    /* ── Card ── */
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      animation: fadeUp 0.6s ease 0.1s both;
-    }
-
-    /* ── Plan Options ── */
-    .plans-section {
-      padding: 28px 28px 20px;
-    }
-
-    .plans-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-
-    .plans-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .plan-option {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      position: relative;
-      background: #fafaf9;
-    }
-
-    .plan-option:hover {
-      border-color: var(--gold);
-      background: #fffdf7;
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .plan-option.selected {
-      border-color: var(--gold);
-      background: linear-gradient(135deg, #fffef9 0%, #fdf8ed 100%);
-      box-shadow: 0 0 0 1px var(--gold), var(--shadow-sm);
-    }
-
-    .plan-radio {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.2s ease;
-    }
-
-    .plan-option.selected .plan-radio {
-      border-color: var(--gold);
-      background: var(--gold);
-    }
-
-    .plan-option.selected .plan-radio::after {
-      content: '';
-      display: block;
-      width: 8px;
-      height: 8px;
-      background: white;
-      border-radius: 50%;
-    }
-
-    .plan-info {
-      flex: 1;
-    }
-
-    .plan-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .plan-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .plan-price {
-      font-family: 'DM Serif Display', serif;
-      font-size: 20px;
-      color: var(--accent);
-      font-weight: 400;
-    }
-
-    .plan-price span {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 400;
-    }
-
-    .plan-badge {
-      position: absolute;
-      top: -1px;
-      right: 12px;
-      background: var(--accent);
-      color: var(--gold-light);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      padding: 3px 8px;
-      border-radius: 0 0 6px 6px;
-      text-transform: uppercase;
-    }
-
-    /* ── Divider ── */
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 0 28px;
-    }
-
-    /* ── Summary ── */
-    .summary-section {
-      padding: 20px 28px;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      color: var(--text-muted);
-      padding: 4px 0;
-    }
-
-    .summary-row.total {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text-primary);
-      border-top: 1px dashed var(--border);
-      margin-top: 8px;
-      padding-top: 12px;
-    }
-
-    .summary-row.total .amount {
-      font-family: 'DM Serif Display', serif;
-      font-size: 22px;
-      color: var(--accent);
-    }
-
-    /* ── PayPal container ── */
-    .paypal-section {
-      padding: 0 28px 28px;
-    }
-
-    .paypal-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-      text-align: center;
-    }
-
+    /* Ensure the PayPal container spans the full width of the card */
     #paypal-button-container {
-      min-height: 50px;
-    }
-
-    /* ── Success message ── */
-    .success-message {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 32px 28px;
-      text-align: center;
-      gap: 12px;
-    }
-
-    .success-icon {
-      width: 56px;
-      height: 56px;
-      background: #e8f5ee;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-    }
-
-    .success-message h3 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 22px;
-      color: var(--success);
-    }
-
-    .success-message p {
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-
-    /* ── Trust badges ── */
-    .trust-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 16px 28px;
-      border-top: 1px solid var(--border);
-    }
-
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .trust-item svg {
-      width: 14px;
-      height: 14px;
-      opacity: 0.5;
-    }
-
-    /* ── Footer ── */
-    .footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 12px;
-      color: var(--text-muted);
-      animation: fadeUp 0.6s ease 0.3s both;
-    }
-
-    /* ── Hidden select (kept for PayPal logic) ── */
-    #item-options,
-    #quantitySelect {
-      display: none !important;
-    }
-
-    /* ── Animations ── */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.5; transform: scale(0.8); }
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 480px) {
-      body {
-        padding: 16px 12px;
-        align-items: flex-start;
-      }
-
-      .plans-section,
-      .summary-section,
-      .paypal-section {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-
-      .trust-row {
-        padding: 12px 20px;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      .plan-price {
-        font-size: 18px;
-      }
-    }
-
-    @media (max-width: 360px) {
-      .plan-option {
-        padding: 12px 12px;
-        gap: 10px;
-      }
-
-      .trust-item:last-child {
-        display: none;
-      }
+        width: 100%;
+        margin-top: 10px;
     }
   </style>
 </head>
 
 <body>
-
-  <!-- Hidden selects — untouched for PayPal logic -->
-  <select id="item-options">
-    <option value="Pakoja 1 vjeqare" price="80">Pakoja 1 vjeqare - 80 EUR</option>
-    <option value="Pakoja 6 muaj" price="55">Pakoja 6 muaj - 55 EUR</option>
-    <option value="Pakoja 3 muaj" price="35">Pakoja 3 muaj - 35 EUR</option>
-  </select>
-  <select id="quantitySelect">
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-    <option value="5">5</option>
-  </select>
-
-  <div class="page-wrapper">
-
-    <!-- Header -->
-    <div class="header">
-      <div class="header-badge">Pagesa e Sigurt</div>
-      <h1>Zgjidhni Paketën<br><em>Tuaj</em></h1>
-      <p>Aktivizoni abonimin me disa klikime</p>
+    <div id="smart-button-container">
+      <div style="text-align: center;">
+        <div style="margin-bottom: 1.25rem;">
+          <p class="welcome-message">Sistemi i pagesave online</p>
+          <select id="item-options">
+            <option value="Pakoja 1 vjeqare" price="80">Pakoja 1 vjeqare - 80 EUR</option>
+            <option value="Pakoja 6 muaj" price="55">Pakoja 6 muaj - 55 EUR</option>
+            <option value="Pakoja 3 muaj" price="35">Pakoja 3 muaj - 35 EUR</option>
+          </select>
+          <select style="visibility: hidden" id="quantitySelect">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+      <div id="paypal-button-container"></div>
+      </div>
     </div>
-
-    <!-- Card -->
-    <div class="card">
-
-      <!-- Plan picker -->
-      <div class="plans-section">
-        <p class="plans-label">Zgjidhni paketën</p>
-        <div class="plans-grid" id="plans-grid">
-
-          <div class="plan-option selected" data-index="0" data-value="Pakoja 1 vjeqare" data-price="80">
-            <div class="plan-badge">Më e mira</div>
-            <div class="plan-radio"></div>
-            <div class="plan-info">
-              <div class="plan-name">Pakoja 1 Vjeçare</div>
-              <div class="plan-desc">Kurseni më shumë · Akses i plotë</div>
-            </div>
-            <div class="plan-price">80 <span>EUR</span></div>
-          </div>
-
-          <div class="plan-option" data-index="1" data-value="Pakoja 6 muaj" data-price="55">
-            <div class="plan-radio"></div>
-            <div class="plan-info">
-              <div class="plan-name">Pakoja 6 Mujore</div>
-              <div class="plan-desc">Fleksibilitet · Akses i plotë</div>
-            </div>
-            <div class="plan-price">55 <span>EUR</span></div>
-          </div>
-
-          <div class="plan-option" data-index="2" data-value="Pakoja 3 muaj" data-price="35">
-            <div class="plan-radio"></div>
-            <div class="plan-info">
-              <div class="plan-name">Pakoja 3 Mujore</div>
-              <div class="plan-desc">Provo shërbimin · Akses i plotë</div>
-            </div>
-            <div class="plan-price">35 <span>EUR</span></div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <!-- Summary -->
-      <div class="summary-section">
-        <div class="summary-row">
-          <span>Çmimi i paketës</span>
-          <span id="summary-base">80.00 EUR</span>
-        </div>
-        <div class="summary-row">
-          <span>Tarifë procesimi</span>
-          <span>4.00 EUR</span>
-        </div>
-        <div class="summary-row total">
-          <span>Total</span>
-          <span class="amount" id="summary-total">84.00 EUR</span>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <!-- PayPal button -->
-      <div class="paypal-section">
-        <p class="paypal-label">Kryeni pagesën me</p>
-        <div id="paypal-button-container"></div>
-      </div>
-
-      <!-- Trust row -->
-      <div class="trust-row">
-        <div class="trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Pagesa e sigurt
-        </div>
-        <div class="trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-          PayPal mbrojtur
-        </div>
-        <div class="trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-          SSL i enkriptuar
-        </div>
-      </div>
-
-    </div><!-- /.card -->
-
-    <div class="footer">© 2024 · Sistemi i pagesave online</div>
-  </div>
-
-  <script src="https://www.paypal.com/sdk/js?client-id=AY9MAS2a5PfniUIv4DjZ3Z_zdPAQYkOcYuRjqAvxB2IMBchXMJrhy2bxkg9ae-FlQXhDyUsM9MMOBmtO&enable-funding=venmo&currency=EUR" data-sdk-integration-source="button-factory"></script>
-
-  <script>
-    /* ── UI: plan picker ── */
-    const planCards = document.querySelectorAll('.plan-option');
-    const itemOptions = document.querySelector('#item-options');
-    const summaryBase = document.getElementById('summary-base');
-    const summaryTotal = document.getElementById('summary-total');
-    const SHIPPING = 4;
-
-    function selectPlan(card) {
-      planCards.forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-
-      const idx = parseInt(card.dataset.index);
-      const price = parseFloat(card.dataset.price);
-
-      // Keep hidden <select> in sync for PayPal logic
-      itemOptions.selectedIndex = idx;
-
-      // Update summary
-      summaryBase.textContent = price.toFixed(2) + ' EUR';
-      summaryTotal.textContent = (price + SHIPPING).toFixed(2) + ' EUR';
-    }
-
-    planCards.forEach(card => {
-      card.addEventListener('click', () => selectPlan(card));
-    });
-
-    /* ── PayPal button (original logic — untouched) ── */
-    function initPayPalButton() {
-      var shipping = 4;
-      var quantity = parseInt(5);
-      var quantitySelect = document.querySelector('#quantitySelect');
-      if (!isNaN(quantity)) {
-        quantitySelect.style.visibility = 'visible';
-      }
-      var orderDescription = 'Sistemi i pagesave online';
-      if (orderDescription === '') { orderDescription = 'Item'; }
-
-      paypal.Buttons({
-        style: {
-          shape: 'rect',
-          color: 'gold',
-          layout: 'vertical',
-          label: 'paypal',
-        },
-        createOrder: function(data, actions) {
-          var selectedItemDescription = itemOptions.options[itemOptions.selectedIndex].value;
-          var selectedItemPrice = parseFloat(itemOptions.options[itemOptions.selectedIndex].getAttribute('price'));
-          var tax = (0 === 0 || false) ? 0 : (selectedItemPrice * (parseFloat(0) / 100));
-          if (quantitySelect.options.length > 0) {
-            quantity = parseInt(quantitySelect.options[quantitySelect.selectedIndex].value);
-          } else {
-            quantity = 1;
-          }
-          tax *= quantity;
-          tax = Math.round(tax * 100) / 100;
-          var priceTotal = quantity * selectedItemPrice + parseFloat(shipping) + tax;
-          priceTotal = Math.round(priceTotal * 100) / 100;
-          var itemTotalValue = Math.round((selectedItemPrice * quantity) * 100) / 100;
-
-          return actions.order.create({
-            purchase_units: [{
-              description: orderDescription,
-              amount: {
-                currency_code: 'EUR',
-                value: priceTotal,
-                breakdown: {
-                  item_total:  { currency_code: 'EUR', value: itemTotalValue },
-                  shipping:    { currency_code: 'EUR', value: shipping },
-                  tax_total:   { currency_code: 'EUR', value: tax }
-                }
-              },
-              items: [{
-                name: selectedItemDescription,
-                unit_amount: { currency_code: 'EUR', value: selectedItemPrice },
-                quantity: quantity
-              }]
-            }]
-          });
-        },
-        onApprove: function(data, actions) {
-          return actions.order.capture().then(function(orderData) {
-            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-            const element = document.getElementById('paypal-button-container');
-            const card = element.closest('.card');
-            // Replace card content with a clean success message
-            card.innerHTML = `
-              <div class="success-message">
-                <div class="success-icon">✓</div>
-                <h3>Pagesa u realizua!</h3>
-                <p>Faleminderit për abonimin tuaj. Do të merrni një email konfirmimi së shpejti.</p>
-              </div>`;
-          });
-        },
-        onError: function(err) {
-          console.log(err);
+    
+    <script src="https://www.paypal.com/sdk/js?client-id=AY9MAS2a5PfniUIv4DjZ3Z_zdPAQYkOcYuRjqAvxB2IMBchXMJrhy2bxkg9ae-FlQXhDyUsM9MMOBmtO&enable-funding=venmo&currency=EUR" data-sdk-integration-source="button-factory"></script>
+    <script>
+      function initPayPalButton() {
+        var shipping = 4;
+        var itemOptions = document.querySelector("#smart-button-container #item-options");
+        var quantity = parseInt(5);
+        var quantitySelect = document.querySelector("#smart-button-container #quantitySelect");
+        if (!isNaN(quantity)) {
+          quantitySelect.style.visibility = "visible";
         }
-      }).render('#paypal-button-container');
-    }
-    initPayPalButton();
-  </script>
+        var orderDescription = 'Sistemi i pagesave online';
+        if(orderDescription === '') {
+          orderDescription = 'Item';
+        }
+        paypal.Buttons({
+          style: {
+            shape: 'rect',
+            color: 'gold',
+            layout: 'vertical',
+            label: 'paypal',
+          },
+          createOrder: function(data, actions) {
+            var selectedItemDescription = itemOptions.options[itemOptions.selectedIndex].value;
+            var selectedItemPrice = parseFloat(itemOptions.options[itemOptions.selectedIndex].getAttribute("price"));
+            var tax = (0 === 0 || false) ? 0 : (selectedItemPrice * (parseFloat(0)/100));
+            if(quantitySelect.options.length > 0) {
+              quantity = parseInt(quantitySelect.options[quantitySelect.selectedIndex].value);
+            } else {
+              quantity = 1;
+            }
+    
+            tax *= quantity;
+            tax = Math.round(tax * 100) / 100;
+            var priceTotal = quantity * selectedItemPrice + parseFloat(shipping) + tax;
+            priceTotal = Math.round(priceTotal * 100) / 100;
+            var itemTotalValue = Math.round((selectedItemPrice * quantity) * 100) / 100;
+    
+            return actions.order.create({
+              purchase_units: [{
+                description: orderDescription,
+                amount: {
+                  currency_code: 'EUR',
+                  value: priceTotal,
+                  breakdown: {
+                    item_total: {
+                      currency_code: 'EUR',
+                      value: itemTotalValue,
+                    },
+                    shipping: {
+                      currency_code: 'EUR',
+                      value: shipping,
+                    },
+                    tax_total: {
+                      currency_code: 'EUR',
+                      value: tax,
+                    }
+                  }
+                },
+                items: [{
+                  name: selectedItemDescription,
+                  unit_amount: {
+                    currency_code: 'EUR',
+                    value: selectedItemPrice,
+                  },
+                  quantity: quantity
+                }]
+              }]
+            });
+          },
+          onApprove: function(data, actions) {
+            return actions.order.capture().then(function(orderData) {
+              
+              // Full available details
+              console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+    
+              // Show a success message within this page, e.g.
+              const element = document.getElementById('paypal-button-container');
+              element.innerHTML = '';
+              element.innerHTML = '<h3>Pagesa u realizua me sukses. Faleminderit!</h3>';
+    
+              // Or go to another URL:  actions.redirect('thank_you.html');
+    
+            });
+          },
+          onError: function(err) {
+            console.log(err);
+          },
+        }).render('#paypal-button-container');
+      }
+      initPayPalButton();
+    </script>
 </body>
 </html>
