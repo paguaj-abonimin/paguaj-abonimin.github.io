@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="sq">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paguaj Abonimin Online</title>
+    
+    <!-- Importing Tailwind CSS for modern, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Importing Inter font for a cleaner, professional look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        
+        /* Custom styling for the select dropdown arrow */
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen p-4 sm:p-6">
+    
+    <!-- Main Card Container -->
+    <div class="bg-white rounded-2xl shadow-lg w-full max-w-md p-6 sm:p-8 border border-gray-100">
+        
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 text-blue-600 mb-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-1">Paguaj Abonimin</h1>
+            <p class="text-sm text-gray-500">Sistemi i pagesave online</p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="mb-6">
+            <label for="item-options" class="block text-sm font-medium text-gray-700 mb-2">Zgjidhni Pakon:</label>
+            <div class="relative">
+                <select id="item-options" class="block w-full px-4 py-3 text-base text-gray-900 border border-gray-300 rounded-xl bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors cursor-pointer hover:bg-gray-100">
+                    <option value="Pakoja 1 vjeqare" price="90">Pakoja 1 vjeqare - 90 EUR</option>
+                    <option value="Pakoja 6 muaj" price="50">Pakoja 6 muaj - 50 EUR</option>
+                    <option value="Pakoja 3 muaj" price="30">Pakoja 3 muaj - 30 EUR</option>
+                </select>
+            </div>
+            <!-- Hidden quantity select kept for existing JS logic compatibility -->
+            <select style="display: none;" id="quantitySelect"></select>
+        </div>
+
+        <!-- PayPal Buttons Container -->
+        <div id="paypal-button-container" class="w-full relative z-0"></div>
+        
+        <!-- Secure Checkout Footer -->
+        <div class="mt-6 text-center text-xs text-gray-400 flex items-center justify-center gap-1">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+            Pagesë e sigurtë 256-bit
+        </div>
+
+    </div>
+
+    <!-- Replaced [client-id] with 'test' to prevent loading errors. Replace 'test' with your live PayPal client ID for production -->
+    <script src="https://www.paypal.com/sdk/js?client-id=test&enable-funding=venmo&currency=EUR" data-sdk-integration-source="button-factory"></script>
+    
+    <script>
+      function initPayPalButton() {
+        // Safety check: ensure PayPal SDK loaded correctly
+        if (typeof paypal === 'undefined') {
+            console.error("PayPal SDK failed to load. Please check the client-id or your network connection.");
+            const element = document.getElementById('paypal-button-container');
+            element.innerHTML = '<div class="text-red-500 text-sm text-center">Gabim në ngarkimin e PayPal.</div>';
+            return;
+        }
+
+        var shipping = 4;
+        var itemOptions = document.querySelector("#item-options");
+        var quantitySelect = document.querySelector("#quantitySelect");
+        var quantity = 1; // Default initialized properly
+        
+        var orderDescription = 'Sistemi i pagesave online';
+
+        paypal.Buttons({
+          style: {
+            shape: 'rect',
+            color: 'gold',
+            layout: 'vertical',
+            label: 'paypal',
+          },
+          createOrder: function(data, actions) {
+            var selectedItemDescription = itemOptions.options[itemOptions.selectedIndex].value;
+            var selectedItemPrice = parseFloat(itemOptions.options[itemOptions.selectedIndex].getAttribute("price"));
+            var tax = 0; // Set to 0 as in original logic
+            
+            if(quantitySelect && quantitySelect.options.length > 0) {
+              quantity = parseInt(quantitySelect.options[quantitySelect.selectedIndex].value);
+            } else {
+              quantity = 1;
+            }
+
+            tax *= quantity;
+            tax = Math.round(tax * 100) / 100;
+            var priceTotal = quantity * selectedItemPrice + parseFloat(shipping) + tax;
+            priceTotal = Math.round(priceTotal * 100) / 100;
+            var itemTotalValue = Math.round((selectedItemPrice * quantity) * 100) / 100;
+
+            return actions.order.create({
+              purchase_units: [{
+                description: orderDescription,
+                amount: {
+                  currency_code: 'EUR',
+                  value: priceTotal,
+                  breakdown: {
+                    item_total: {
+                      currency_code: 'EUR',
+                      value: itemTotalValue,
+                    },
+                    shipping: {
+                      currency_code: 'EUR',
+                      value: shipping,
+                    },
+                    tax_total: {
+                      currency_code: 'EUR',
+                      value: tax,
+                    }
+                  }
+                },
+                items: [{
+                  name: selectedItemDescription,
+                  unit_amount: {
+                    currency_code: 'EUR',
+                    value: selectedItemPrice,
+                  },
+                  quantity: quantity
+                }]
+              }]
+            });
+          },
+          onApprove: function(data, actions) {
+            return actions.order.capture().then(function(orderData) {
+              console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+
+              // Show a beautifully styled success message
+              const element = document.getElementById('paypal-button-container');
+              element.innerHTML = `
+                <div class="p-5 text-sm text-green-700 bg-green-50 rounded-xl border border-green-200 text-center font-medium animate-pulse">
+                  <svg class="w-8 h-8 mx-auto mb-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  <h3 class="text-lg font-bold mb-1">Pagesa u realizua me sukses!</h3>
+                  <p class="text-green-600 font-normal">Faleminderit për abonimin tuaj.</p>
+                </div>
+              `;
+            });
+          },
+          onError: function(err) {
+            console.log(err);
+          },
+        }).render('#paypal-button-container');
+      }
+      initPayPalButton();
+    </script>
+</body>
+</html>
