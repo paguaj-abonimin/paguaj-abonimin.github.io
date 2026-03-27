@@ -302,7 +302,6 @@
   <script src="https://www.paypal.com/sdk/js?client-id=AY9MAS2a5PfniUIv4DjZ3Z_zdPAQYkOcYuRjqAvxB2IMBchXMJrhy2bxkg9ae-FlQXhDyUsM9MMOBmtO&enable-funding=venmo&currency=EUR" data-sdk-integration-source="button-factory"></script>
   <script>
     function initPayPalButton() {
-      var shipping = 4;
       var itemOptions = document.querySelector("#smart-button-container #item-options");
       var quantity = 1;
       
@@ -310,6 +309,7 @@
       if (orderDescription === '') {
         orderDescription = 'Item';
       }
+      
       paypal.Buttons({
         style: {
           shape: 'rect',
@@ -320,15 +320,26 @@
         createOrder: function(data, actions) {
           var selectedItemDescription = itemOptions.options[itemOptions.selectedIndex].value;
           var selectedItemPrice = parseFloat(itemOptions.options[itemOptions.selectedIndex].getAttribute("price"));
+          
+          // --- UPDATED DYNAMIC FEE CALCULATION ---
+          // Adjusted to ~5.5% + 0.35 EUR to account for cross-border and credit card variations
+          var feePercentage = 0.055; 
+          var fixedFee = 0.35;       
+          
+          var calculatedShipping = (selectedItemPrice * feePercentage) + fixedFee;
+          var shipping = Math.round(calculatedShipping * 100) / 100; 
+          // ---------------------------------------
+
           var tax = (0 === 0 || false) ? 0 : (selectedItemPrice * (parseFloat(0) / 100));
           
           quantity = 1;
           
           tax *= quantity;
           tax = Math.round(tax * 100) / 100;
-          var priceTotal = quantity * selectedItemPrice + parseFloat(shipping) + tax;
+          var priceTotal = quantity * selectedItemPrice + shipping + tax;
           priceTotal = Math.round(priceTotal * 100) / 100;
           var itemTotalValue = Math.round((selectedItemPrice * quantity) * 100) / 100;
+          
           return actions.order.create({
             purchase_units: [{
               description: orderDescription,
