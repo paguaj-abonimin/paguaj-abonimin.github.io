@@ -28,14 +28,13 @@
     body {
       background: var(--bg);
       font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
+      min-height: 100dvh; /* Changed from 100vh to fix mobile scroll */
       display: flex;
-      align-items: center;
+      align-items: flex-start; /* Changed from center to move it up */
       justify-content: center;
-      padding: 24px 16px;
+      padding: 12vh 16px 24px; /* Added 12vh top padding so it doesn't touch the very edge */
     }
 
-    /* Subtle background texture matching the main page */
     body::before {
       content: '';
       position: fixed;
@@ -96,6 +95,9 @@
     }
 
     @media (max-width: 480px) {
+      body {
+        padding-top: 10vh; /* Slightly higher on smaller mobile screens */
+      }
       .card {
         padding: 40px 24px;
       }
